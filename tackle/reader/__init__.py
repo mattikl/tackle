@@ -7,6 +7,3 @@ def read(f, format):
         format = format.lower()
     reader = getreader(format)
     return reader(f)
-
-def read_csv(f):
-    pass
