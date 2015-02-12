@@ -1,5 +1,4 @@
 import csv
-from collections import namedtuple
 
 TACKLE_READER_FORMAT = 'csv'
 
