@@ -1,7 +1,7 @@
 import click
 
 @click.command()
-@click.option('-f', '--from', 'source', type=click.File('rb'), help='input file')
+@click.argument('source', type=click.File('rb'))
 @click.option('--format', help='input format')
 @click.option('-a', '--as', 'filetype', help='output format')
 @click.option('-t', '--to', 'dest', help='output file, default stdout')
