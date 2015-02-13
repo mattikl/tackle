@@ -7,15 +7,16 @@ from .writer import write
 @click.argument('source', type=click.File('rb'))
 @click.option('--format', help='input format')
 @click.option('--charset', help='input encoding')
+@click.option('--columns', help='specify input columns (comma separated)')
 @click.option('-a', '--as', 'outputformat', help='output format')
 @click.option('-t', '--to', 'dest', help='output file, default stdout')
 @click.option('-n', '--name', help='object name')
 @click.option('-l', '--limit', type=click.INT, help='limit result set length')
 @click.option('-m', '--match', help='only return results matching to query')
-def cli(source, format, charset, outputformat, dest, name, limit, match):
+def cli(source, format, charset, columns, outputformat, dest, name, limit, match):
     """Convert tabular data into another format"""
     try:
-    	data = read(source, format)
+    	data = read(source, format, charset, columns)
     except Exception, e:
     	raise click.ClickException(str(e))
     out = write(data, outputformat, name)
