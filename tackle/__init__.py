@@ -15,9 +15,13 @@ from .writer import write
 @click.option('-m', '--match', help='only return results matching to query')
 def cli(source, format, charset, columns, outputformat, dest, name, limit, match):
     """Convert tabular data into another format"""
+    read_options = {}
+    for option in ("format", "charset", "columns", "limit", "match"):
+        read_options[option] = locals().get(option)
+    
     try:
-    	data = read(source, format, charset, columns)
+        data = read(source, read_options)
     except Exception, e:
-    	raise click.ClickException(str(e))
+        raise click.ClickException(str(e))
     out = write(data, outputformat, name)
     click.echo(out)

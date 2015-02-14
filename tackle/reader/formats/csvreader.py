@@ -2,7 +2,8 @@ import csv
 
 TACKLE_READER_FORMAT = 'csv'
 
-def reader(f, charset, headers):
+def reader(f, options):
+    headers = options["columns"]
     csv_reader = csv.reader(f)
     if headers is None:
         headers = next(csv_reader)
