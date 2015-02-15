@@ -7,6 +7,10 @@ def reader(f, options):
     csv_reader = csv.reader(f)
     if headers is None:
         headers = next(csv_reader)
-    # TODO if fewer columns than values, then strip remaining column
-    # the other way around just return nulls
-    return [dict(zip(headers, r)) for r in csv_reader if len(r) == len(headers)]
+
+    for row in csv_reader:
+        # TODO if fewer columns than values, then strip remaining column
+        # the other way around just return nulls
+        if len(row) == len(headers):
+            yield dict(zip(headers, row))
+
