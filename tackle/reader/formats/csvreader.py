@@ -4,7 +4,10 @@ TACKLE_READER_FORMAT = 'csv'
 
 def reader(f, options):
     headers = options["columns"]
-    csv_reader = csv.reader(f)
+    charset = options["charset"]
+    stream = decode(f, charset) if charset is not None else f
+
+    csv_reader = csv.reader(stream)
     if headers is None:
         headers = next(csv_reader)
 
@@ -14,3 +17,6 @@ def reader(f, options):
         if len(row) == len(headers):
             yield dict(zip(headers, row))
 
+def decode(stream, charset):
+    for line in stream:
+        yield line.decode(charset).encode('utf-8')

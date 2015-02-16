@@ -10,7 +10,7 @@ def get_options(all_options, *names):
 @click.command()
 @click.argument('source', type=click.File('rb'))
 @click.option('--format', help='input format')
-@click.option('--charset', help='input encoding')
+@click.option('--charset', help='input encoding, default utf-8')
 @click.option('--columns', help='specify input columns (comma separated)')
 @click.option('-a', '--as', 'outputformat', help='output format')
 @click.option('-t', '--to', 'dest', help='output file, default stdout')
