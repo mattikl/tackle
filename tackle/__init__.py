@@ -18,16 +18,18 @@ def get_options(all_options, *names):
 @click.option('--first', type=click.INT, help='index of first row returned')
 @click.option('--last', type=click.INT, help='index of last row returned')
 @click.option('-m', '--match', help='only return results matching to query')
-def cli(source, format, charset, columns, outputformat, dest, name, first, last, match):
+@click.option('--selected', help='only return selected columns')
+def cli(source, format, charset, columns, outputformat,
+        dest, name, first, last, match, selected):
     """Convert tabular data into another format"""
     read_options = get_options(locals(), "format", "charset", "columns")
+    match_options = get_options(locals(), "first", "last", "match", "selected")
 
     try:
         reader = read(source, read_options)
     except Exception, e:
         raise click.ClickException(str(e))
 
-    match_options = get_options(locals(), "first", "last", "match")
     filtered = matcher(reader, match_options)
 
     out = write(filtered, outputformat, name)

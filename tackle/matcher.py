@@ -1,5 +1,5 @@
 import re
-from itertools import islice, ifilter
+from itertools import islice, ifilter, imap
 
 def match_value(pattern):
     if pattern is None:
@@ -25,6 +25,19 @@ def match_value(pattern):
     
     return fun
 
+def select_columns(columnstr):
+    if columnstr is None:
+        return lambda x: x
+
+    columns = columnstr.split(',')
+
+    def fun(row):
+        return {k: v for k, v in row.iteritems() if k in columns}
+
+    return fun
+
 def matcher(reader, options):
     sliced = islice(reader, options['first'], options['last'])
-    return ifilter(match_value(options['match']), sliced)
+    matched = ifilter(match_value(options['match']), sliced)
+    selected = imap(select_columns(options['selected']), matched)
+    return selected
