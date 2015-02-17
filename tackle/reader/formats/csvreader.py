@@ -1,3 +1,5 @@
+"""Builtin csv reader"""
+
 import csv
 
 TACKLE_READER_FORMAT = 'csv'
