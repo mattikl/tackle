@@ -9,14 +9,14 @@ plugin_template = '''"""describe your plugin here"""
 
 from tackle.utils import rowsfromdict, rowsfromlist
 
-def read_%(name)s(f, options):
+def read_{name}(f, options):
 	pass
 
-TACKLE_READER_FORMATS = {
-    'format': read_%(name)s,
-}
+TACKLE_READER_FORMATS = {{
+    'format': read_{name},
+}}
 
-# TACKLE_WRITER_FORMATS = {
-#     'format': write%(name)s,
-# }
+# TACKLE_WRITER_FORMATS = {{
+#     'format': write_{name},
+# }}
 '''
