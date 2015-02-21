@@ -1,7 +1,7 @@
 """Builtin csv reader"""
 
 import csv
-from collections import namedtuple
+from tackle.utils import makerow
 
 TACKLE_READER_FORMAT = 'csv'
 
@@ -14,7 +14,7 @@ def reader(f, options):
     if headers is None:
         headers = next(csv_reader)
 
-    Row = namedtuple('Row', headers)
+    Row = makerow(headers)
     for r in csv_reader:
         # TODO if fewer columns than values, then strip remaining column
         # the other way around just return nulls
