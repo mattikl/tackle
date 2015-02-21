@@ -11,5 +11,6 @@ setup(
     entry_points='''
         [console_scripts]
         tackle=tackle:cli
+        tackle-create=tackle.create:create
     ''',
 )
