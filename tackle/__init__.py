@@ -1,6 +1,6 @@
 import click
 
-from .reader import read
+from .formats import read
 from .writer import write
 from .matcher import matcher
 
@@ -19,6 +19,7 @@ def get_options(all_options, *names):
 @click.option('--last', type=click.INT, help='index of last row returned')
 @click.option('-m', '--match', help='only return results matching to query')
 @click.option('--selected', help='only return selected columns')
+# TODO --list formats, show fun.__doc__
 def cli(source, format, charset, columns, outputformat,
         dest, name, first, last, match, selected):
     """Convert tabular data into another format"""
