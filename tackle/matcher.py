@@ -1,6 +1,6 @@
 import re
 from itertools import islice, ifilter, imap
-from collections import namedtuple
+from tackle.utils import makerow
 
 def match_value(pattern):
     if pattern is None:
@@ -35,7 +35,7 @@ def select_columns(columnstr):
     columns = columnstr.split(',')
 
     def fun(row):
-        Row = namedtuple('Row', columns)
+        Row = makerow(columns)
         values = [getattr(row, col) for col in columns]
         return Row(*values)
 
