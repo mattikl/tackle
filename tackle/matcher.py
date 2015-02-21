@@ -1,5 +1,6 @@
 import re
 from itertools import islice, ifilter, imap
+from collections import namedtuple
 
 def match_value(pattern):
     if pattern is None:
@@ -16,9 +17,11 @@ def match_value(pattern):
     prog = re.compile(pattern)
     
     def fun(row):
-        for key, val in row.iteritems():
-            if column is not None and key != column:
-                continue
+        if column is not None:
+            val = getattr(row, column)
+            return prog.match(val)
+
+        for val in row:
             if prog.match(val):
                 return True
         return False
@@ -32,7 +35,9 @@ def select_columns(columnstr):
     columns = columnstr.split(',')
 
     def fun(row):
-        return {k: v for k, v in row.iteritems() if k in columns}
+        Row = namedtuple('Row', columns)
+        values = [getattr(row, col) for col in columns]
+        return Row(*values)
 
     return fun
 

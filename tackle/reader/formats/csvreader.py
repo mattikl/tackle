@@ -1,6 +1,7 @@
 """Builtin csv reader"""
 
 import csv
+from collections import namedtuple
 
 TACKLE_READER_FORMAT = 'csv'
 
@@ -13,11 +14,12 @@ def reader(f, options):
     if headers is None:
         headers = next(csv_reader)
 
-    for row in csv_reader:
+    Row = namedtuple('Row', headers)
+    for r in csv_reader:
         # TODO if fewer columns than values, then strip remaining column
         # the other way around just return nulls
-        if len(row) == len(headers):
-            yield dict(zip(headers, row))
+        if len(r) == len(headers):
+            yield Row(*r)
 
 def decode(stream, charset):
     for line in stream:

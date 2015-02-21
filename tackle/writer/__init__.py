@@ -2,7 +2,8 @@ import json
 
 # as of now ignore format and just write json for testing
 def write(data, format, object_name):
-	data = list(data)
+	# TODO must be a nicer way to serialize namedtuple as json?
+	data = [r._asdict() for r in data]
 	if object_name is not None:
 		output = {object_name: data}
 	else:
