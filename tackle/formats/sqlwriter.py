@@ -18,8 +18,8 @@ def _insert_statements(data, name):
     for r in data:
         yield _build_insert(name, r._fields, r)
 
-def write_sqlinsert(data, name):
-    return "\n".join(_insert_statements(data, name))
+def write_sqlinsert(data, options):
+    return "\n".join(_insert_statements(data, options['name']))
 
 # this syntax works with SQLite
 def write_sqlcreate(data, name):
@@ -30,9 +30,9 @@ def write_sqlcreate(data, name):
     output += ");\n\n"
     return output
 
-def write_sql(data, name):
+def write_sql(data, options):
     d1, d2 = tee(data) # very inefficient because we just need the first row from d1
-    return write_sqlcreate(d1, name) + write_sqlinsert(d2, name)
+    return write_sqlcreate(d1, options['name']) + write_sqlinsert(d2, options)
 
 TACKLE_WRITER_FORMATS = {
     'sql': write_sql,

@@ -1,7 +1,6 @@
 import click
 
-from .formats import read
-from .writer import write
+from .formats import read, write
 from .matcher import matcher
 
 def get_options(all_options, *names):
@@ -12,20 +11,20 @@ def get_options(all_options, *names):
 @click.option('--format', help='input format')
 @click.option('--charset', help='input encoding, default utf-8')
 @click.option('--columns', help='specify input columns (comma separated)')
-@click.option('-a', '--as', 'outputformat', help='output format')
+@click.option('-a', '--as', 'outputformat', default='json', help='output format')
 @click.option('-t', '--to', 'dest', help='output file, default stdout')
 @click.option('-n', '--name', help='object name')
 @click.option('--first', type=click.INT, help='index of first row returned')
 @click.option('--last', type=click.INT, help='index of last row returned')
 @click.option('-m', '--match', help='only return results matching to query')
 @click.option('--selected', help='only return selected columns')
-# TODO --list formats, show fun.__doc__
+# TODO --list formats, show first line of fun.__doc__
 def cli(source, format, charset, columns, outputformat,
         dest, name, first, last, match, selected):
     """Convert tabular data into another format"""
     read_options = get_options(locals(), "format", "charset", "columns")
     match_options = get_options(locals(), "first", "last", "match", "selected")
-
+    write_options = get_options(locals(), "outputformat", "name")
     try:
         reader = read(source, read_options)
     except Exception, e:
@@ -33,5 +32,5 @@ def cli(source, format, charset, columns, outputformat,
 
     filtered = matcher(reader, match_options)
 
-    out = write(filtered, outputformat, name)
+    out = write(filtered, write_options)
     click.echo(out)

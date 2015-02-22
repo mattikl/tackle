@@ -43,7 +43,6 @@ def getreader(format):
     else:
         raise Exception("Reader for format '%s' not found." % format)
 
-
 def read(f, options):
     format = options["format"]
     if format is None:
@@ -52,3 +51,20 @@ def read(f, options):
         format = format.lower()
     reader = getreader(format)
     return reader(f, options)
+
+# TODO refactor reader and writer handling, so much code in common
+
+def getwriter(format):
+    if format in writers:
+        return writers[format]
+    else:
+        raise Exception("Writer for format '%s' not found." % format)
+
+def write(f, options):
+    format = options["outputformat"]
+    if format is None:
+        format = f.name.lower().split('.')[-1]
+    else:
+        format = format.lower()
+    writer = getwriter(format)
+    return writer(f, options)
