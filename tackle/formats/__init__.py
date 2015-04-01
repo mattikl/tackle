@@ -20,15 +20,19 @@ def _find_plugins(name=__name__, path=__path__):
     for importer, modname, ispkg in pkgutil.walk_packages(path=path,
                                                           prefix=name+'.',
                                                           onerror=lambda x: None):
-        mod = import_module(modname)
+        try:
+            mod = import_module(modname)
+        except Exception, e:
+            # TODO what to do if there's an import error?
+            print "Import error with plugin %s: %s" % (modname, e)
+        else:
+            if READER_FORMAT_DEFINITIONS in dir(mod):
+                formats = getattr(mod, READER_FORMAT_DEFINITIONS)
+                _add_formatters(formats, readers)
 
-        if READER_FORMAT_DEFINITIONS in dir(mod):
-            formats = getattr(mod, READER_FORMAT_DEFINITIONS)
-            _add_formatters(formats, readers)
-
-        if WRITER_FORMAT_DEFINITIONS in dir(mod):
-            formats = getattr(mod, WRITER_FORMAT_DEFINITIONS)
-            _add_formatters(formats, writers)
+            if WRITER_FORMAT_DEFINITIONS in dir(mod):
+                formats = getattr(mod, WRITER_FORMAT_DEFINITIONS)
+                _add_formatters(formats, writers)
 
 _find_plugins()
 
