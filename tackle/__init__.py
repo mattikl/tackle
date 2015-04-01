@@ -3,6 +3,8 @@ import click
 from .formats import read, write
 from .matcher import matcher
 
+DEFAULT_OUTPUT_FORMAT = 'json'
+
 def get_options(all_options, *names):
     return {k: v for k, v in all_options.items() if k in names}
 
@@ -11,7 +13,7 @@ def get_options(all_options, *names):
 @click.option('--format', help='input format')
 @click.option('--charset', help='input encoding, default utf-8')
 @click.option('--columns', help='specify input columns (comma separated)')
-@click.option('-a', '--as', 'outputformat', default='json', help='output format')
+@click.option('-a', '--as', 'outputformat', help='output format')
 @click.option('-t', '--to', 'dest', help='output file, default stdout')
 @click.option('-n', '--name', help='object name')
 @click.option('--first', type=click.INT, help='index of first row returned')
@@ -23,13 +25,23 @@ def cli(source, format, charset, columns, outputformat,
     """Convert tabular data into another format"""
     read_options = get_options(locals(), "format", "charset", "columns")
     match_options = get_options(locals(), "first", "last", "match", "selected")
-    write_options = get_options(locals(), "outputformat", "name")
     try:
         reader = read(source, read_options)
     except Exception, e:
         raise click.ClickException(str(e))
 
+    if dest is not None and outputformat is None:
+        outputformat = dest.split('.')[-1]
+
+    if outputformat is None:
+        outputformat = DEFAULT_OUTPUT_FORMAT
+
+    write_options = get_options(locals(), "outputformat", "name")
     filtered = matcher(reader, match_options)
 
-    out = write(filtered, write_options)
-    click.echo(out)
+    output = write(filtered, write_options)
+    if dest is None:
+        click.echo(output)
+    else:
+        with open(dest, 'w') as f:
+            f.write(output)
