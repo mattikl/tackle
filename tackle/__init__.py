@@ -7,7 +7,7 @@ def get_options(all_options, *names):
     return {k: v for k, v in all_options.items() if k in names}
 
 @click.command()
-@click.argument('source', type=click.File('rb'))
+@click.option('-f', '--from', 'source', type=click.File('rb'))
 @click.option('--format', help='input format')
 @click.option('--charset', help='input encoding, default utf-8')
 @click.option('--columns', help='specify input columns (comma separated)')
