@@ -8,6 +8,7 @@ setup(
     install_requires=[
         'click',
     ],
+    extras_require={'with_tablib': 'tablib'},
     entry_points='''
         [console_scripts]
         tackle=tackle:cli
