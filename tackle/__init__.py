@@ -7,7 +7,7 @@ def get_options(all_options, *names):
     return {k: v for k, v in all_options.items() if k in names}
 
 @click.command()
-@click.option('-f', '--from', 'source', type=click.File('rb'))
+@click.argument('source', type=click.File('rb'))
 @click.option('--format', help='input format')
 @click.option('--charset', help='input encoding, default utf-8')
 @click.option('--columns', help='specify input columns (comma separated)')
@@ -18,7 +18,6 @@ def get_options(all_options, *names):
 @click.option('--last', type=click.INT, help='index of last row returned')
 @click.option('-m', '--match', help='only return results matching to query')
 @click.option('--selected', help='only return selected columns')
-# TODO --list formats, show first line of fun.__doc__
 def cli(source, format, charset, columns, outputformat,
         dest, name, first, last, match, selected):
     """Convert tabular data into another format"""

@@ -26,4 +26,4 @@ and you're ready to tackle:
 
 * Python 3 compliance (currently requires 2.7 due to the importlib import)
 * support custom readers and writers
-* read from multiple sources (idea)
+* idea: custom plugins in git

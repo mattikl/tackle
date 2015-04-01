@@ -2,16 +2,21 @@ import click
 from . import settings
 
 @click.group()
-def create():
-    """Create tackle directory or plugin"""
+def mgmt():
+    """Tackle management commands"""
 
-@create.command()
+@mgmt.command()
 @click.option('--path', help='directory path')
-def dir(path):
+def createdir(path):
     """Create tackle directory"""
     click.echo('create dir')
 
-@create.command()
-def plugin():
+@mgmt.command()
+def createplugin():
     """Create tackle plugin"""
     click.echo('create plugin')
+
+@mgmt.command()
+def show():
+	"""Show plugins available plugins"""
+	
