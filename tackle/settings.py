@@ -1,9 +1,10 @@
 import os
 
 PLUGIN_DIR_VAR = 'TACKLE_PLUGIN_DIR'
+DEFAULT_PLUGIN_DIR = os.path.join(os.getenv('HOME'), '.tackle')
 
 def plugin_dir():
-	return os.environ.get(PLUGIN_DIR_VAR)
+	return os.environ.get(PLUGIN_DIR_VAR, DEFAULT_PLUGIN_DIR)
 
 plugin_template = '''"""describe your plugin here"""
 

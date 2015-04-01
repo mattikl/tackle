@@ -4,6 +4,23 @@ import os
 from . import settings
 from .formats import readers, writers
 
+PLUGIN_BOILERPLATE = '''# tackle plugin
+
+def read_x(f, options):
+    """Describe x"""
+
+def write_x(data, options):
+    """Describe x"""
+
+TACKLE_READER_FORMATS = {
+    'json': read_x,
+}
+
+TACKLE_WRITER_FORMATS = {
+    'json': write_x,
+}
+'''
+
 def mkdir(path):
     try:
         os.mkdir(path)
@@ -23,7 +40,7 @@ def mgmt():
 
 @mgmt.command()
 @click.option('--path', type=click.Path(exists=False),
-              default=os.path.join(os.getenv('HOME'), '.tackle'))
+              default=settings.plugin_dir())
 def createdir(path):
     """Create tackle directory"""
     if os.path.exists(path):
@@ -42,9 +59,22 @@ def createdir(path):
 
 
 @mgmt.command()
-def createplugin():
+@click.argument('name')
+def createplugin(name):
     """Create tackle plugin"""
-    click.echo('create plugin')
+    try:
+        if not name.endswith(".py"):
+            name += ".py"
+        path = os.path.join(settings.plugin_dir(), name)
+        if (os.path.exists(path)):
+            raise click.ClickException("File %s already exists, not rewriting.")
+        f = open(path, 'w')
+        f.write(PLUGIN_BOILERPLATE)
+    except Exception, e:
+        raise click.ClickException("Couldn't create plugin: %s" % e)
+    else:
+        click.echo("Wrote plugin %s" % path)
+        click.launch(path)
 
 def firstline(obj):
     return obj.splitlines()[0] if isinstance(obj, str) and len(obj) else ""
