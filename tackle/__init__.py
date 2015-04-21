@@ -28,7 +28,7 @@ def cli(source, format, charset, columns, outputformat,
     try:
         reader = read(source, read_options)
     except Exception, e:
-        raise click.ClickException(str(e))
+        raise click.ClickException("Exception from reader: %s" % str(e))
 
     if dest is not None and outputformat is None:
         outputformat = dest.split('.')[-1]
@@ -39,9 +39,12 @@ def cli(source, format, charset, columns, outputformat,
     write_options = get_options(locals(), "outputformat", "name")
     filtered = matcher(reader, match_options)
 
-    output = write(filtered, write_options)
-    if dest is None:
-        click.echo(output)
-    else:
-        with open(dest, 'w') as f:
-            f.write(output)
+    try:
+        output = write(filtered, write_options)
+        if dest is None:
+            click.echo(output)
+        else:
+            with open(dest, 'w') as f:
+                f.write(output)
+    except Exception, e:
+        raise click.ClickException("Exception from writer: %s" % str(e))
