@@ -1,5 +1,7 @@
 import click
 
+from itertools import tee
+
 from .formats import read, write
 from .matcher import matcher
 
@@ -38,9 +40,19 @@ def cli(source, format, charset, columns, outputformat,
 
     write_options = get_options(locals(), "outputformat", "name")
     filtered = matcher(reader, match_options)
+    chartest, outstream = tee(filtered)
+
+    # test that output stream is utf8
+    # TODO doesn't test headers
+    try:
+        for row in chartest:
+            for val in row:
+                val.decode('utf-8')
+    except UnicodeDecodeError, e:
+        raise click.ClickException("Reader didn't return valid utf-8")
 
     try:
-        output = write(filtered, write_options)
+        output = write(outstream, write_options)
         if dest is None:
             click.echo(output)
         else:
