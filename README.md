@@ -24,6 +24,18 @@ and you're ready to tackle:
 
     $ tackle tests/data/test.csv -n foos
 
+## Examples
+
+All examples can be found under the `tests/data` directory.
+
+Convert a CSV file (utf-8 encoding) into an XLS spreadsheet:
+
+    $ tackle utf8.csv -t utf8.xls
+
+Convert a CSV file (isolatin encoding) into an XLS spreadsheet:
+
+    $ tackle isolatin.csv --charset iso-8859-1 -t iso.xls
+
 ## TODO
 
 * Python 3 compliance (currently requires 2.7 due to the importlib import)
