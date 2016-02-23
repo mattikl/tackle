@@ -2,8 +2,15 @@
 
 Convert tabular data into another format
 
-Status: basic functionality is starting to be there, but still changing the
-interface a lot.
+**Status:** This project is not ready for mainstream use nor under active development.
+I'm using it to convert CSV into json or XLS, but I'm not developing
+it further unless I have a real use case for it.
+
+Tips for working with tabular data or json in general:
+
+* [jq](https://stedolan.github.io/jq/) command-line tool is great (`brew install jq`)
+* Python [tablib](http://docs.python-tablib.org/) library (`pip install tablib`)
+* OpenOffice lets you select the character set when opening a CSV file
 
 ## Idea
 
@@ -36,7 +43,7 @@ Convert a CSV file (isolatin encoding) into an XLS spreadsheet:
 
     $ tackle isolatin.csv --charset iso-8859-1 -t iso.xls
 
-## TODO
+## Plan
 
 * Python 3 compliance (currently requires 2.7 due to the importlib import)
 * support custom readers and writers
